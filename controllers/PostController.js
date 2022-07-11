@@ -13,7 +13,7 @@ export const getLastTags = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      message: 'Не удалось получить статьи',
+      message: 'Не удалось получить тэги',
     });
   }
 };
@@ -59,7 +59,7 @@ export const getOne = async (req, res) => {
         }
         res.json(doc);
       },
-    );
+    ).populate('user');
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -105,9 +105,9 @@ export const create = async (req, res) => {
   try {
     const doc = new PostModel({
       title: req.body.title,
-      text: req.body.title,
+      text: req.body.text,
       imageUrl: req.body.imageUrl,
-      tags: req.body.tags,
+      tags: req.body.tags.split(','),
       user: req.userId,
     });
 
@@ -135,7 +135,7 @@ export const update = async (req, res) => {
         text: req.body.text,
         imageUrl: req.body.imageUrl,
         user: req.userId,
-        tags: req.body.tags,
+        tags: req.body.tags.split(','),
       },
     );
 
