@@ -13,7 +13,7 @@ export const getLastTags = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      message: 'Не удалось получить тэги',
+      message: 'Не удалось получить теги',
     });
   }
 };
