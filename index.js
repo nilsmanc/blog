@@ -7,10 +7,9 @@ import mongoose from 'mongoose'
 import { registerValidation, loginValidation, postCreateValidation } from './validations.js'
 import { handleValidationErrors, checkAuth } from './utils/index.js'
 import { UserController, PostController } from './controllers/index.js'
-import { MONGODB } from './variables.js'
 
 mongoose
-  .connect(MONGODB)
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log('DB ok'))
   .catch((err) => console.log('DB error', err))
 
