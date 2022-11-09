@@ -1,6 +1,6 @@
 import PostModel from '../models/Post.js'
 
-export const getLastTags = async (res) => {
+export const getLastTags = async (req, res) => {
   try {
     const posts = await PostModel.find().limit(5).exec()
 
@@ -18,7 +18,7 @@ export const getLastTags = async (res) => {
   }
 }
 
-export const getAll = async (res) => {
+export const getAll = async (req, res) => {
   try {
     const posts = await PostModel.find().populate('user').exec()
 
