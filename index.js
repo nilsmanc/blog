@@ -9,7 +9,9 @@ import { handleValidationErrors, checkAuth } from './utils/index.js'
 import { UserController, PostController } from './controllers/index.js'
 
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(
+    'mongodb+srv://admin:wwwwww@cluster0.ae06jup.mongodb.net/blog?retryWrites=true&w=majority',
+  )
   .then(() => console.log('DB ok'))
   .catch((err) => console.log('DB error', err))
 
@@ -34,9 +36,7 @@ app.use(cors())
 app.use('/uploads', express.static('uploads'))
 
 app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login)
-
 app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register)
-
 app.get('/auth/me', checkAuth, UserController.getMe)
 
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
@@ -44,8 +44,6 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
     url: `/uploads/${req.file.originalname}`,
   })
 })
-
-app.get('/tags', PostController.getLastTags)
 
 app.get('/posts', PostController.getAll)
 app.get('/posts/tags', PostController.getLastTags)
