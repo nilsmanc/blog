@@ -1,6 +1,10 @@
-import PostModel from '../models/Post.js'
+import { UserAuthInfoRequest } from './../types'
+import { Request, Response } from 'express'
+import { Document } from 'mongoose'
 
-export const getLastTags = async (req, res) => {
+import PostModel from '../models/Post'
+
+export const getLastTags = async (req: Request, res: Response) => {
   try {
     const posts = await PostModel.find().limit(5).exec()
 
@@ -18,7 +22,7 @@ export const getLastTags = async (req, res) => {
   }
 }
 
-export const getAll = async (req, res) => {
+export const getAll = async (req: Request, res: Response) => {
   try {
     const posts = await PostModel.find().populate('user').exec()
 
@@ -31,7 +35,7 @@ export const getAll = async (req, res) => {
   }
 }
 
-export const getOne = async (req, res) => {
+export const getOne = async (req: Request, res: Response) => {
   try {
     const postId = req.params.id
 
@@ -68,14 +72,14 @@ export const getOne = async (req, res) => {
   }
 }
 
-export const remove = async (req, res) => {
+export const remove = async (req: Request, res: Response) => {
   try {
     const postId = req.params.id
     PostModel.findOneAndDelete(
       {
         _id: postId,
       },
-      (err, doc) => {
+      (err: Error, doc: Document) => {
         if (err) {
           console.log(err)
           return res.status(500).json({
@@ -101,7 +105,7 @@ export const remove = async (req, res) => {
   }
 }
 
-export const create = async (req, res) => {
+export const create = async (req: UserAuthInfoRequest, res: Response) => {
   try {
     const doc = new PostModel({
       title: req.body.title,
@@ -122,7 +126,7 @@ export const create = async (req, res) => {
   }
 }
 
-export const update = async (req, res) => {
+export const update = async (req: UserAuthInfoRequest, res: Response) => {
   try {
     const postId = req.params.id
 

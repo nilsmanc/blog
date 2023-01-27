@@ -1,6 +1,16 @@
-import mongoose from 'mongoose'
+import mongoose, { Document, Mixed } from 'mongoose'
+import { User } from './User'
 
-const PostSchema = new mongoose.Schema(
+export interface Post extends Document {
+  title: string
+  text: string
+  tags: Mixed
+  viewsCount: number
+  user: User
+  imageUrl: string
+}
+
+const PostSchema = new mongoose.Schema<Post>(
   {
     title: {
       type: String,
@@ -24,7 +34,6 @@ const PostSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-
     imageUrl: String,
   },
   {
@@ -32,4 +41,4 @@ const PostSchema = new mongoose.Schema(
   },
 )
 
-export default mongoose.model('Post', PostSchema)
+export default mongoose.model<Post>('Post', PostSchema)

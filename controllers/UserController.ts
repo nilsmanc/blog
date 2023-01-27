@@ -1,9 +1,12 @@
+import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
-import UserModel from '../models/User.js'
+import UserModel from '../models/User'
 
-export const register = async (req, res) => {
+import { UserAuthInfoRequest, UserDocument } from '../types'
+
+export const register = async (req: Request, res: Response) => {
   try {
     const password = req.body.password
     const salt = await bcrypt.genSalt(10)
@@ -16,7 +19,7 @@ export const register = async (req, res) => {
       passwordHash: hash,
     })
 
-    const user = await doc.save()
+    const user = (await doc.save()) as UserDocument
 
     const token = jwt.sign(
       {
@@ -42,9 +45,9 @@ export const register = async (req, res) => {
   }
 }
 
-export const login = async (req, res) => {
+export const login = async (req: Request, res: Response) => {
   try {
-    const user = await UserModel.findOne({ email: req.body.email })
+    const user = (await UserModel.findOne({ email: req.body.email })) as UserDocument
     if (!user) {
       return res.status(404).json({
         message: 'Пользователь не найден',
@@ -82,9 +85,9 @@ export const login = async (req, res) => {
   }
 }
 
-export const getMe = async (req, res) => {
+export const getMe = async (req: UserAuthInfoRequest, res: Response) => {
   try {
-    const user = await UserModel.findById(req.userId)
+    const user = (await UserModel.findById(req.userId)) as UserDocument
     if (!user) {
       return res.status(404).json({
         message: 'Пользователь не найден',
